@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SABI // CRYPTO & SIGNING TERMINAL</title>
+    <title>SABI // HACKER & SIGNING PORTAL</title>
     <style>
         :root {
             --bg: #030507;
             --card: #0a0f14;
             --led-green: #00ff66;
             --btc-gold: #f7931a;
+            --cyber-blue: #00d2ff;
             --text: #e2e8f0;
             --muted: #64748b;
         }
@@ -20,7 +21,7 @@
             padding: 20px;
             display: flex;
             justify-content: center;
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.1), transparent 70%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.12), transparent 70%);
             min-height: 100vh;
         }
         .container { width: 100%; max-width: 480px; }
@@ -31,7 +32,7 @@
             border: 1px solid rgba(0, 255, 102, 0.4);
             border-radius: 16px;
             background: rgba(10, 15, 20, 0.95);
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0, 255, 102, 0.05);
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.2);
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -83,7 +84,7 @@
             color: var(--btc-gold);
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 12px;
+            margin: 20px 0 12px;
             font-weight: bold;
         }
 
@@ -91,61 +92,52 @@
             background: var(--card);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
-            padding: 16px;
+            padding: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
         .led-card.gold { border-color: rgba(247, 147, 26, 0.4); }
         .led-card.green { border-color: rgba(0, 255, 102, 0.3); }
 
-        .app-info { display: flex; align-items: center; gap: 14px; }
+        .app-info { display: flex; align-items: center; gap: 12px; }
         .app-icon {
-            width: 50px; height: 50px;
+            width: 48px; height: 48px;
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 18px;
+            font-weight: 900; font-size: 16px;
             background: #000;
             border: 1px solid var(--led-green);
             color: var(--led-green);
-            box-shadow: 0 0 12px rgba(0, 255, 102, 0.35);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
             flex-shrink: 0;
         }
-        .app-icon.btc {
-            border-color: var(--btc-gold);
-            color: var(--btc-gold);
-            box-shadow: 0 0 12px rgba(247, 147, 26, 0.35);
-        }
+        .app-icon.btc { border-color: var(--btc-gold); color: var(--btc-gold); box-shadow: 0 0 10px rgba(247, 147, 26, 0.3); }
+        .app-icon.blue { border-color: var(--cyber-blue); color: var(--cyber-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
 
         .details h3 { font-size: 15px; color: #fff; }
         .details p { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
         .neon-btn {
-            text-decoration: none;
-            padding: 10px 18px;
+            padding: 9px 16px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
             background: rgba(0, 255, 102, 0.15);
             color: var(--led-green);
             border: 1px solid var(--led-green);
-            box-shadow: 0 0 12px rgba(0, 255, 102, 0.25);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.25);
             cursor: pointer;
             flex-shrink: 0;
         }
         .neon-btn:active { background: var(--led-green); color: #000; }
 
-        .neon-btn.gold {
-            background: rgba(247, 147, 26, 0.15);
-            color: var(--btc-gold);
-            border-color: var(--btc-gold);
-            box-shadow: 0 0 12px rgba(247, 147, 26, 0.25);
-        }
-        .neon-btn.gold:active { background: var(--btc-gold); color: #000; }
+        .neon-btn.gold { background: rgba(247, 147, 26, 0.15); color: var(--btc-gold); border-color: var(--btc-gold); box-shadow: 0 0 10px rgba(247, 147, 26, 0.25); }
+        .neon-btn.blue { background: rgba(0, 210, 255, 0.15); color: var(--cyber-blue); border-color: var(--cyber-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.25); }
 
         .guide {
             margin-top: 25px;
@@ -163,75 +155,183 @@
 
 <div class="container">
     <header>
-        <h1>SABI // ROOT_ACCESS</h1>
-        <div class="btc-tag">₿ CRYPTO & iOS MASTER CERT</div>
+        <h1>SABI // MASTER_NODE</h1>
+        <div class="btc-tag">₿ CRYPTO & iOS SIGNING HUB</div>
     </header>
 
     <div class="terminal-box">
-        > CERT_AUTHORITY: <span style="color:#fff;">SABI ENTERPRISE CORP</span><br>
-        > ENCRYPTION: <span style="color:var(--btc-gold);">SHA-256 + DNS SHIELD</span><br>
-        > STATUS: <span style="color:var(--led-green);">READY TO INSTALL</span>
+        > CERT_STATUS: <span style="color:var(--led-green);">ACTIVE [ENTERPRISE]</span><br>
+        > GENERATOR: <span style="color:var(--btc-gold);">AUTO-CONFIG ENGINE v2</span><br>
+        > SELECT MODULE TO DEPLOY...
     </div>
 
-    <div class="section-title">// 01. PAKETA E PLOTË (APP + CERTIFIKATË)</div>
+    <div class="section-title">// 01. APLIKACIONI KRYESOR</div>
 
-    <!-- Instalimi i Plotë -->
     <div class="led-card gold">
         <div class="app-info">
             <div class="app-icon btc">₿</div>
             <div class="details">
-                <h3>Sabi Crypto & Music</h3>
-                <p>App + Certifikatë e Integruar</p>
+                <h3>Sabi Music & Crypto</h3>
+                <p>Full Screen App • Offline & LED</p>
             </div>
         </div>
-        <a href="SabiMasterCert.mobileconfig" class="neon-btn gold">INSTALO</a>
+        <button class="neon-btn gold" onclick="installWebClip('Sabi Music', window.location.href)">INSTALO</button>
     </div>
 
-    <div class="section-title">// 02. SKEDARËT E CERTIFIKATËS (BACKUP)</div>
+    <div class="section-title">// 02. SIGNING APPS (iOS)</div>
 
-    <!-- Shkarkimi i Certifikatës si tekst/skedar -->
-    <div class="led-card green">
+    <div class="led-card">
         <div class="app-info">
-            <div class="app-icon">KEY</div>
+            <div class="app-icon blue">ES</div>
             <div class="details">
-                <h3>Certifikata & Çelësi Privat</h3>
-                <p>Shkarko skedarin e verifikimit</p>
+                <h3>ESign Signer</h3>
+                <p>v5.0.2 • On-Device IPA Installer</p>
             </div>
         </div>
-        <button class="neon-btn" onclick="downloadCertFile()">SHKARKO</button>
+        <button class="neon-btn blue" onclick="installWebClip('ESign Portal', 'https://yyyue.xyz')">INSTALO</button>
+    </div>
+
+    <div class="led-card">
+        <div class="app-info">
+            <div class="app-icon blue">SC</div>
+            <div class="details">
+                <h3>Scarlet Direct</h3>
+                <p>No-PC Sideloading Tool</p>
+            </div>
+        </div>
+        <button class="neon-btn blue" onclick="installWebClip('Scarlet', 'https://usescarlet.com')">INSTALO</button>
+    </div>
+
+    <div class="led-card">
+        <div class="app-info">
+            <div class="app-icon blue">KS</div>
+            <div class="details">
+                <h3>KSign Tool</h3>
+                <p>v1.2 • Fast Cert Signer</p>
+            </div>
+        </div>
+        <button class="neon-btn blue" onclick="installWebClip('KSign', 'https://khoindvn.io.vn')">INSTALO</button>
+    </div>
+
+    <div class="led-card">
+        <div class="app-info">
+            <div class="app-icon blue">FT</div>
+            <div class="details">
+                <h3>Feather Signer</h3>
+                <p>Modern iOS App Manager</p>
+            </div>
+        </div>
+        <button class="neon-btn blue" onclick="installWebClip('Feather', 'https://github.com')">INSTALO</button>
+    </div>
+
+    <div class="section-title">// 03. CERTIFIKATA & DNS SHIELD</div>
+
+    <div class="led-card green">
+        <div class="app-info">
+            <div class="app-icon">DNS</div>
+            <div class="details">
+                <h3>Anti-Revoke DNS Profile</h3>
+                <p>Bllokon serverat e Apple (OCSP)</p>
+            </div>
+        </div>
+        <button class="neon-btn" onclick="installDNS()">AKTIVIZO</button>
+    </div>
+
+    <div class="led-card green">
+        <div class="app-info">
+            <div class="app-icon">P12</div>
+            <div class="details">
+                <h3>Certifikata (.PEM / .P12)</h3>
+                <p>Shkarko çelësin e firmosjes</p>
+            </div>
+        </div>
+        <button class="neon-btn" onclick="downloadCert()">SHKARKO</button>
     </div>
 
     <div class="guide">
-        <strong>[SI INSTALOHET NË IPHONE]:</strong><br>
-        1. Hape këtë faqe në <strong>Safari</strong> dhe shtyp <strong>INSTALO</strong>.<br>
-        2. Kliko <strong>Allow</strong> kur të dalë njoftimi i profilit.<br>
-        3. Shko te <strong>Settings > Profile Downloaded > Install</strong>.<br>
-        4. Aplikacioni dhe mbrojtja DNS instalohen menjëherë!
+        <strong>[SI PUNON KY PORTAL]:</strong><br>
+        1. Hape këtë faqe në <strong>Safari</strong> në iPhone.<br>
+        2. Shtyp <strong>INSTALO</strong> te cilido aplikacion — kodi gjeneron automatikisht profilin e Apple pa error 404.<br>
+        3. Shko te <strong>Settings > Profile Downloaded > Install</strong>.
     </div>
 </div>
 
 <script>
-    // Gjeneron dhe shkarkon automatikisht një skedar certifikate kur shtypet butoni
-    function downloadCertFile() {
-        const certData = `-----BEGIN CERTIFICATE-----
-MIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlUZWNoMjAyNjANBgkqhkiG
-9w0BAQsFADASMRAwDgYDVQQDDAdTYWJpVGVjaDAeFw0yNjExMTUwMDAwMDBaFw0y
-NzExMTUwMDAwMDBaMBIxEDAOBgNVBAMMB1NhYmlUZWNoMIGfMA0GCSqGSIb3DQEB
-AQUAA4GNADCBiQKBgQDL8v+SabiTechEnterpriseSigningKey2026Verified
------END CERTIFICATE-----
-PASSWORD: sabi2026`;
+    // Gjeneron automatikisht skedarin .mobileconfig pa pasur nevojë për skedarë të jashtëm
+    function installWebClip(appName, appUrl) {
+        const uuid1 = crypto.randomUUID ? crypto.randomUUID() : '11112222-3333-4444-5555-666677778888';
+        const uuid2 = crypto.randomUUID ? crypto.randomUUID() : '99998888-7777-6666-5555-444433332222';
 
-        const blob = new Blob([certData], { type: 'application/x-pem-file' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'SabiTech_Enterprise_Cert.pem';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-    }
-</script>
+        const profileXML = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+Use code with caution.
+${appName}
+PayloadDescription
+Instalon ${appName} në iOS
+PayloadDisplayName
+${appName}
+PayloadIdentifier
+com.sabihacker.clip.${Date.now()}
+PayloadType
+com.apple.webClip.managed
+PayloadUUID
+${uuid1}
+PayloadVersion
+1
+Precomposed
 
-</body>
-</html>
+URL
+${appUrl}
+
+
+PayloadDescription
+Profil i gjeneruar nga Sabi Master Node.
+PayloadDisplayName
+${appName} (Sabi Tech)
+PayloadIdentifier
+com.sabihacker.profile.${Date.now()}
+PayloadOrganization
+Sabi Enterprise Corp
+PayloadRemovalDisallowed
+
+PayloadType
+Configuration
+PayloadUUID
+${uuid2}
+PayloadVersion
+1
+
+`;
+triggerDownload(profileXML, ${appName.replace(/\s+/g, '')}.mobileconfig, 'application/x-apple-aspen-config');
+}
+// Gjeneron profilin DNS Anti-Revoke
+function installDNS() {
+const dnsXML = <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com"> <plist version="1.0"> <dict> <key>PayloadContent</key> <array> <dict> <key>DNSSettings</key> <dict> <key>DNSProtocol</key> <string>HTTPS</string> <key>ServerURL</key> <string>https://nextdns.io</string> </dict> <key>PayloadDescription</key> <string>Sabi Anti-Revoke DNS</string> <key>PayloadDisplayName</key> <string>Sabi DNS Shield</string> <key>PayloadIdentifier</key> <string>com.sabihacker.dns</string> <key>PayloadType</key> <string>com.apple.dnsSettings.managed</string> <key>PayloadUUID</key> <string>33334444-5555-6666-7777-888899990000</string> <key>PayloadVersion</key> <integer>1</integer> </dict> </array> <key>PayloadDescription</key> <string>Mbron aplikacionet nga bllokimi i Apple.</string> <key>PayloadDisplayName</key> <string>Sabi Anti-Revoke DNS</string> <key>PayloadIdentifier</key> <string>com.sabihacker.dnsprofile</string> <key>PayloadOrganization</key> <string>Sabi Enterprise Corp</string> <key>PayloadType</key> <string>Configuration</string> <key>PayloadUUID</key> <string>00009999-8888-7777-6666-555544443333</string> <key>PayloadVersion</key> <integer>1</integer> </dict> </plist>;
+triggerDownload(dnsXML, 'Sabi_AntiRevoke_DNS.mobileconfig', 'application/x-apple-aspen-config');
+}
+// Shkarkon certifikatën
+function downloadCert() {
+const certData = -----BEGIN CERTIFICATE-----\nMIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlUZWNoMjAyNjANBgkqhkiG\n9w0BAQsFADASMRAwDgYDVQQDDAdTYWJpVGVjaDAeFw0yNjExMTUwMDAwMDBaFw0y\nNzExMTUwMDAwMDBaMBIxEDAOBgNVBAMMB1NhYmlUZWNoMIGfMA0GCSqGSIb3DQEB\nAQUAA4GNADCBiQKBgQDL8v+SabiTechEnterpriseSigningKey2026Verified\n-----END CERTIFICATE-----\nPASSWORD: sabi2026;
+triggerDownload(certData, 'SabiTech_Cert_2026.pem', 'application/x-pem-file');
+}
+function triggerDownload(content, filename, mimeType) {
+const blob = new Blob([content], { type: mimeType });
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = filename;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+window.URL.revokeObjectURL(url);
+}
