@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerURL</key>
+                <string>https://nextdns.io</string>
+            </dict>
+            <key>PayloadDescription</key>
+            <string>Sabi Tech Anti-Revoke DNS</string>
+            <key>PayloadDisplayName</key>
+            <string>Sabi Tech DNS</string>
+            <key>PayloadIdentifier</key>
+            <string>com.sabitech.dns</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>11223344-5566-7788-99AA-BBCCDDEEFF00</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>Profil mbrojtës kundër bllokimit të certifikatave në iOS.</string>
+    <key>PayloadDisplayName</key>
+    <string>Sabi Tech Anti-Revoke</string>
+    <key>PayloadIdentifier</key>
+    <string>com.sabitech.profile</string>
+    <key>PayloadOrganization</key>
+    <string>Sabi Tech</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>00FFEEDD-CCBB-AA99-8877-665544332211</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>
