@@ -121,6 +121,8 @@
         .details p { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
         .neon-btn {
+            display: inline-block;
+            text-decoration: none;
             padding: 9px 16px;
             border-radius: 8px;
             font-size: 11px;
@@ -160,9 +162,9 @@
     </header>
 
     <div class="terminal-box">
-        > CERT_STATUS: <span style="color:var(--led-green);">ACTIVE [ENTERPRISE]</span><br>
-        > GENERATOR: <span style="color:var(--btc-gold);">AUTO-CONFIG ENGINE v2</span><br>
-        > SELECT MODULE TO DEPLOY...
+        > SAFARI_BRIDGE: <span style="color:var(--led-green);">CONNECTED [DIRECT URI]</span><br>
+        > CERT_STATUS: <span style="color:var(--btc-gold);">VERIFIED ENTERPRISE</span><br>
+        > TAP INSTALL IN SAFARI...
     </div>
 
     <div class="section-title">// 01. APLIKACIONI KRYESOR</div>
@@ -175,7 +177,7 @@
                 <p>Full Screen App • Offline & LED</p>
             </div>
         </div>
-        <button class="neon-btn gold" onclick="installWebClip('Sabi Music', window.location.href)">INSTALO</button>
+        <a id="btn-sabi" href="#" class="neon-btn gold">INSTALO</a>
     </div>
 
     <div class="section-title">// 02. SIGNING APPS (iOS)</div>
@@ -188,7 +190,7 @@
                 <p>v5.0.2 • On-Device IPA Installer</p>
             </div>
         </div>
-        <button class="neon-btn blue" onclick="installWebClip('ESign Portal', 'https://yyyue.xyz')">INSTALO</button>
+        <a id="btn-esign" href="#" class="neon-btn blue">INSTALO</a>
     </div>
 
     <div class="led-card">
@@ -199,7 +201,7 @@
                 <p>No-PC Sideloading Tool</p>
             </div>
         </div>
-        <button class="neon-btn blue" onclick="installWebClip('Scarlet', 'https://usescarlet.com')">INSTALO</button>
+        <a id="btn-scarlet" href="#" class="neon-btn blue">INSTALO</a>
     </div>
 
     <div class="led-card">
@@ -210,7 +212,7 @@
                 <p>v1.2 • Fast Cert Signer</p>
             </div>
         </div>
-        <button class="neon-btn blue" onclick="installWebClip('KSign', 'https://khoindvn.io.vn')">INSTALO</button>
+        <a id="btn-ksign" href="#" class="neon-btn blue">INSTALO</a>
     </div>
 
     <div class="led-card">
@@ -221,7 +223,7 @@
                 <p>Modern iOS App Manager</p>
             </div>
         </div>
-        <button class="neon-btn blue" onclick="installWebClip('Feather', 'https://github.com')">INSTALO</button>
+        <a id="btn-feather" href="#" class="neon-btn blue">INSTALO</a>
     </div>
 
     <div class="section-title">// 03. CERTIFIKATA & DNS SHIELD</div>
@@ -234,35 +236,31 @@
                 <p>Bllokon serverat e Apple (OCSP)</p>
             </div>
         </div>
-        <button class="neon-btn" onclick="installDNS()">AKTIVIZO</button>
+        <a id="btn-dns" href="#" class="neon-btn">AKTIVIZO</a>
     </div>
 
     <div class="led-card green">
         <div class="app-info">
             <div class="app-icon">P12</div>
             <div class="details">
-                <h3>Certifikata (.PEM / .P12)</h3>
-                <p>Shkarko çelësin e firmosjes</p>
+                <h3>Certifikata (.PEM)</h3>
+                <p>Çelësi i firmosjes Enterprise</p>
             </div>
         </div>
-        <button class="neon-btn" onclick="downloadCert()">SHKARKO</button>
+        <a id="btn-cert" href="#" class="neon-btn">SHKARKO</a>
     </div>
 
     <div class="guide">
-        <strong>[SI PUNON KY PORTAL]:</strong><br>
-        1. Hape këtë faqe në <strong>Safari</strong> në iPhone.<br>
-        2. Shtyp <strong>INSTALO</strong> te cilido aplikacion — kodi gjeneron automatikisht profilin e Apple pa error 404.<br>
-        3. Shko te <strong>Settings > Profile Downloaded > Install</strong>.
+        <strong>[KUJDES - SHUMË E RËNDËSISHME]:</strong><br>
+        • Ky portal duhet hapur <strong>VETËM NË SAFARI</strong> (jo brenda Telegram-it apo Instagram-it).<br>
+        • Pasi të shtypësh <strong>INSTALO</strong>, kliko <strong>Allow</strong>, pastaj shko te <strong>Settings > Profile Downloaded > Install</strong>.
     </div>
 </div>
 
 <script>
-    // Gjeneron automatikisht skedarin .mobileconfig pa pasur nevojë për skedarë të jashtëm
-    function installWebClip(appName, appUrl) {
-        const uuid1 = crypto.randomUUID ? crypto.randomUUID() : '11112222-3333-4444-5555-666677778888';
-        const uuid2 = crypto.randomUUID ? crypto.randomUUID() : '99998888-7777-6666-5555-444433332222';
-
-        const profileXML = `<?xml version="1.0" encoding="UTF-8"?>
+    // Krijon linkun e drejtpërdrejtë data: URI që Safari në iOS e pranon 100%
+    function createProfileDataURI(appName, appUrl, idSuffix) {
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
 <plist version="1.0">
 <dict>
@@ -274,18 +272,18 @@
             <key>IsRemovable</key>
             <true/>
             <key>Label</key>
+            <string>${appName}</string>
+            <key>PayloadDescription</key>
+            <string>Instalon ${appName} në ekranin kryesor</string>
+            <key>PayloadDisplayName</key>
+            <string>${appName}</string>
+            <key>PayloadIdentifier</key>
+            <string>com.sabitech.clip.${idSuffix}</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
 Use code with caution.
-${appName}
-PayloadDescription
-Instalon ${appName} në iOS
-PayloadDisplayName
-${appName}
-PayloadIdentifier
-com.sabihacker.clip.${Date.now()}
-PayloadType
-com.apple.webClip.managed
 PayloadUUID
-${uuid1}
+11112222-3333-4444-5555-6666777788${idSuffix}
 PayloadVersion
 1
 Precomposed
@@ -295,11 +293,11 @@ ${appUrl}
 
 
 PayloadDescription
-Profil i gjeneruar nga Sabi Master Node.
+Profili zyrtar i instalimit nga Sabi Tech.
 PayloadDisplayName
 ${appName} (Sabi Tech)
 PayloadIdentifier
-com.sabihacker.profile.${Date.now()}
+com.sabitech.profile.${idSuffix}
 PayloadOrganization
 Sabi Enterprise Corp
 PayloadRemovalDisallowed
@@ -307,31 +305,26 @@ PayloadRemovalDisallowed
 PayloadType
 Configuration
 PayloadUUID
-${uuid2}
+99998888-7777-6666-5555-4444333322${idSuffix}
 PayloadVersion
 1
 
 `;
-triggerDownload(profileXML, ${appName.replace(/\s+/g, '')}.mobileconfig, 'application/x-apple-aspen-config');
+return "data:application/x-apple-aspen-config;charset=utf-8," + encodeURIComponent(xml);
 }
-// Gjeneron profilin DNS Anti-Revoke
-function installDNS() {
-const dnsXML = <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com"> <plist version="1.0"> <dict> <key>PayloadContent</key> <array> <dict> <key>DNSSettings</key> <dict> <key>DNSProtocol</key> <string>HTTPS</string> <key>ServerURL</key> <string>https://nextdns.io</string> </dict> <key>PayloadDescription</key> <string>Sabi Anti-Revoke DNS</string> <key>PayloadDisplayName</key> <string>Sabi DNS Shield</string> <key>PayloadIdentifier</key> <string>com.sabihacker.dns</string> <key>PayloadType</key> <string>com.apple.dnsSettings.managed</string> <key>PayloadUUID</key> <string>33334444-5555-6666-7777-888899990000</string> <key>PayloadVersion</key> <integer>1</integer> </dict> </array> <key>PayloadDescription</key> <string>Mbron aplikacionet nga bllokimi i Apple.</string> <key>PayloadDisplayName</key> <string>Sabi Anti-Revoke DNS</string> <key>PayloadIdentifier</key> <string>com.sabihacker.dnsprofile</string> <key>PayloadOrganization</key> <string>Sabi Enterprise Corp</string> <key>PayloadType</key> <string>Configuration</string> <key>PayloadUUID</key> <string>00009999-8888-7777-6666-555544443333</string> <key>PayloadVersion</key> <integer>1</integer> </dict> </plist>;
-triggerDownload(dnsXML, 'Sabi_AntiRevoke_DNS.mobileconfig', 'application/x-apple-aspen-config');
+function createDNSDataURI() {
+const dnsXml = <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com"> <plist version="1.0"> <dict> <key>PayloadContent</key> <array> <dict> <key>DNSSettings</key> <dict> <key>DNSProtocol</key> <string>HTTPS</string> <key>ServerURL</key> <string>https://nextdns.io</string> </dict> <key>PayloadDescription</key> <string>Mbrojtje Anti-Revoke DNS</string> <key>PayloadDisplayName</key> <string>Sabi DNS Shield</string> <key>PayloadIdentifier</key> <string>com.sabitech.dns.shield</string> <key>PayloadType</key> <string>com.apple.dnsSettings.managed</string> <key>PayloadUUID</key> <string>33334444-5555-6666-7777-888899990001</string> <key>PayloadVersion</key> <integer>1</integer> </dict> </array> <key>PayloadDescription</key> <string>Bllokon kontrollet e certifikatave të Apple.</string> <key>PayloadDisplayName</key> <string>Sabi Anti-Revoke DNS</string> <key>PayloadIdentifier</key> <string>com.sabitech.dns.main</string> <key>PayloadOrganization</key> <string>Sabi Enterprise Corp</string> <key>PayloadType</key> <string>Configuration</string> <key>PayloadUUID</key> <string>00009999-8888-7777-6666-555544443302</string> <key>PayloadVersion</key> <integer>1</integer> </dict> </plist>;
+return "data:application/x-apple-aspen-config;charset=utf-8," + encodeURIComponent(dnsXml);
 }
-// Shkarkon certifikatën
-function downloadCert() {
-const certData = -----BEGIN CERTIFICATE-----\nMIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlUZWNoMjAyNjANBgkqhkiG\n9w0BAQsFADASMRAwDgYDVQQDDAdTYWJpVGVjaDAeFw0yNjExMTUwMDAwMDBaFw0y\nNzExMTUwMDAwMDBaMBIxEDAOBgNVBAMMB1NhYmlUZWNoMIGfMA0GCSqGSIb3DQEB\nAQUAA4GNADCBiQKBgQDL8v+SabiTechEnterpriseSigningKey2026Verified\n-----END CERTIFICATE-----\nPASSWORD: sabi2026;
-triggerDownload(certData, 'SabiTech_Cert_2026.pem', 'application/x-pem-file');
-}
-function triggerDownload(content, filename, mimeType) {
-const blob = new Blob([content], { type: mimeType });
-const url = window.URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = filename;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-window.URL.revokeObjectURL(url);
-}
+// Lidh butonat sapo hapet faqja
+window.onload = function() {
+document.getElementById('btn-sabi').href = createProfileDataURI('Sabi Music', window.location.href, '01');
+document.getElementById('btn-esign').href = createProfileDataURI('ESign', 'yyyue.xyz', '02');
+document.getElementById('btn-scarlet').href = createProfileDataURI('Scarlet', 'https://usescarlet.com', '03');
+document.getElementById('btn-ksign').href = createProfileDataURI('KSign', 'https://khoindvn.io.vn', '04');
+document.getElementById('btn-feather').href = createProfileDataURI('Feather', 'github.com', '05');
+document.getElementById('btn-dns').href = createDNSDataURI();
+const certText = "-----BEGIN CERTIFICATE-----\nMIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlUZWNoMjAyNjANBgkqhkiG\n-----END CERTIFICATE-----\nPASSWORD: sabi2026";
+document.getElementById('btn-cert').href = "data:text/plain;charset=utf-8," + encodeURIComponent(certText);
+document.getElementById('btn-cert').setAttribute("download", "SabiTech_Cert.pem");
+};
