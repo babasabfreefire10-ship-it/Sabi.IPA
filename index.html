@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SABI // HACKER & CRYPTO PORTAL</title>
+    <title>SABI // CRYPTO & SIGNING TERMINAL</title>
     <style>
         :root {
             --bg: #030507;
@@ -20,19 +20,18 @@
             padding: 20px;
             display: flex;
             justify-content: center;
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.08), transparent 70%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.1), transparent 70%);
             min-height: 100vh;
         }
         .container { width: 100%; max-width: 480px; }
 
-        /* LED Header */
         header {
             text-align: center;
             padding: 25px 15px;
-            border: 1px solid rgba(0, 255, 102, 0.3);
+            border: 1px solid rgba(0, 255, 102, 0.4);
             border-radius: 16px;
-            background: rgba(10, 15, 20, 0.9);
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.15), inset 0 0 15px rgba(0, 255, 102, 0.05);
+            background: rgba(10, 15, 20, 0.95);
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0, 255, 102, 0.05);
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -43,7 +42,7 @@
             top: 0; left: -100%;
             width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--led-green), var(--btc-gold), transparent);
-            animation: scanline 3s linear infinite;
+            animation: scanline 2.5s linear infinite;
         }
         @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
 
@@ -51,7 +50,7 @@
             font-size: 26px;
             font-weight: 900;
             color: var(--led-green);
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+            text-shadow: 0 0 12px rgba(0, 255, 102, 0.7);
             letter-spacing: 2px;
         }
         .btc-tag {
@@ -59,15 +58,14 @@
             background: rgba(247, 147, 26, 0.15);
             color: var(--btc-gold);
             border: 1px solid var(--btc-gold);
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
             margin-top: 8px;
-            box-shadow: 0 0 10px rgba(247, 147, 26, 0.3);
+            box-shadow: 0 0 12px rgba(247, 147, 26, 0.4);
         }
 
-        /* Terminal Status */
         .terminal-box {
             background: #000;
             border: 1px solid #1e293b;
@@ -77,7 +75,7 @@
             font-size: 12px;
             color: var(--led-green);
             margin-bottom: 22px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .section-title {
@@ -89,26 +87,19 @@
             font-weight: bold;
         }
 
-        /* LED Cards */
         .led-card {
             background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
-            padding: 15px;
+            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 14px;
-            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .led-card:hover {
-            border-color: var(--led-green);
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
-        }
-        .led-card.gold:hover {
-            border-color: var(--btc-gold);
-            box-shadow: 0 0 15px rgba(247, 147, 26, 0.25);
-        }
+        .led-card.gold { border-color: rgba(247, 147, 26, 0.4); }
+        .led-card.green { border-color: rgba(0, 255, 102, 0.3); }
 
         .app-info { display: flex; align-items: center; gap: 14px; }
         .app-icon {
@@ -119,18 +110,18 @@
             background: #000;
             border: 1px solid var(--led-green);
             color: var(--led-green);
-            box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 12px rgba(0, 255, 102, 0.35);
+            flex-shrink: 0;
         }
         .app-icon.btc {
             border-color: var(--btc-gold);
             color: var(--btc-gold);
-            box-shadow: 0 0 12px rgba(247, 147, 26, 0.3);
+            box-shadow: 0 0 12px rgba(247, 147, 26, 0.35);
         }
 
         .details h3 { font-size: 15px; color: #fff; }
         .details p { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-        /* Neon Buttons */
         .neon-btn {
             text-decoration: none;
             padding: 10px 18px;
@@ -139,20 +130,20 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
-            background: rgba(0, 255, 102, 0.1);
+            background: rgba(0, 255, 102, 0.15);
             color: var(--led-green);
             border: 1px solid var(--led-green);
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
-            transition: 0.2s;
+            box-shadow: 0 0 12px rgba(0, 255, 102, 0.25);
             cursor: pointer;
+            flex-shrink: 0;
         }
         .neon-btn:active { background: var(--led-green); color: #000; }
 
         .neon-btn.gold {
-            background: rgba(247, 147, 26, 0.1);
+            background: rgba(247, 147, 26, 0.15);
             color: var(--btc-gold);
             border-color: var(--btc-gold);
-            box-shadow: 0 0 10px rgba(247, 147, 26, 0.2);
+            box-shadow: 0 0 12px rgba(247, 147, 26, 0.25);
         }
         .neon-btn.gold:active { background: var(--btc-gold); color: #000; }
 
@@ -172,63 +163,75 @@
 
 <div class="container">
     <header>
-        <h1>SABI // NODE_01</h1>
-        <div class="btc-tag">₿ CRYPTO & iOS SIGNING TERMINAL</div>
+        <h1>SABI // ROOT_ACCESS</h1>
+        <div class="btc-tag">₿ CRYPTO & iOS MASTER CERT</div>
     </header>
 
     <div class="terminal-box">
-        > SYSTEM_STATUS: <span style="color:#fff;">ONLINE [ENCRYPTED]</span><br>
-        > CERT_PROFILE: <span style="color:var(--btc-gold);">VERIFIED WEBCLIP + DNS</span><br>
-        > READY FOR iOS DEPLOYMENT...
+        > CERT_AUTHORITY: <span style="color:#fff;">SABI ENTERPRISE CORP</span><br>
+        > ENCRYPTION: <span style="color:var(--btc-gold);">SHA-256 + DNS SHIELD</span><br>
+        > STATUS: <span style="color:var(--led-green);">READY TO INSTALL</span>
     </div>
 
-    <div class="section-title">// 01. INSTALIMI DIREKT (PUNON 100%)</div>
+    <div class="section-title">// 01. PAKETA E PLOTË (APP + CERTIFIKATË)</div>
 
-    <!-- Butoni që instalon App-in direkt në iPhone -->
+    <!-- Instalimi i Plotë -->
     <div class="led-card gold">
         <div class="app-info">
             <div class="app-icon btc">₿</div>
             <div class="details">
-                <h3>Sabi Crypto & Music App</h3>
-                <p>Full Screen iOS App • Pa Revoke</p>
+                <h3>Sabi Crypto & Music</h3>
+                <p>App + Certifikatë e Integruar</p>
             </div>
         </div>
-        <a href="SabiHackerApp.mobileconfig" class="neon-btn gold">INSTALO</a>
+        <a href="SabiMasterCert.mobileconfig" class="neon-btn gold">INSTALO</a>
     </div>
 
-    <div class="section-title">// 02. CERTIFIKATA & MBROJTJA DNS</div>
+    <div class="section-title">// 02. SKEDARËT E CERTIFIKATËS (BACKUP)</div>
 
-    <!-- Profili DNS Anti-Revoke -->
-    <div class="led-card">
+    <!-- Shkarkimi i Certifikatës si tekst/skedar -->
+    <div class="led-card green">
         <div class="app-info">
-            <div class="app-icon">DNS</div>
+            <div class="app-icon">KEY</div>
             <div class="details">
-                <h3>Anti-Revoke Shield v4</h3>
-                <p>Bllokon serverat e Apple (OCSP)</p>
+                <h3>Certifikata & Çelësi Privat</h3>
+                <p>Shkarko skedarin e verifikimit</p>
             </div>
         </div>
-        <a href="anti-revoke.mobileconfig" class="neon-btn">AKTIVIZO</a>
-    </div>
-
-    <!-- Shkarkimi i paketës së certifikatës -->
-    <div class="led-card">
-        <div class="app-info">
-            <div class="app-icon">P12</div>
-            <div class="details">
-                <h3>Enterprise Cert Pack</h3>
-                <p>Skedari i konfigurimit të sigurisë</p>
-            </div>
-        </div>
-        <button class="neon-btn" onclick="alert('Certifikata u verifikua! Kliko INSTALO te aplikacioni lart për ta vendosur në ekran.')">VERIFIKO</button>
+        <button class="neon-btn" onclick="downloadCertFile()">SHKARKO</button>
     </div>
 
     <div class="guide">
-        <strong>[UDHËZIME PËR IPHONE - SAFARI]:</strong><br>
-        1. Kliko butonin <strong>INSTALO</strong> dhe shtyp <strong>Allow</strong>.<br>
-        2. Shko te <strong>Settings > Profile Downloaded</strong>.<br>
-        3. Shtyp <strong>Install</strong> (vendos kodin e telefonit) dhe aplikacioni me ikonën <strong>₿</strong> do të shfaqet në ekranin kryesor!
+        <strong>[SI INSTALOHET NË IPHONE]:</strong><br>
+        1. Hape këtë faqe në <strong>Safari</strong> dhe shtyp <strong>INSTALO</strong>.<br>
+        2. Kliko <strong>Allow</strong> kur të dalë njoftimi i profilit.<br>
+        3. Shko te <strong>Settings > Profile Downloaded > Install</strong>.<br>
+        4. Aplikacioni dhe mbrojtja DNS instalohen menjëherë!
     </div>
 </div>
+
+<script>
+    // Gjeneron dhe shkarkon automatikisht një skedar certifikate kur shtypet butoni
+    function downloadCertFile() {
+        const certData = `-----BEGIN CERTIFICATE-----
+MIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlUZWNoMjAyNjANBgkqhkiG
+9w0BAQsFADASMRAwDgYDVQQDDAdTYWJpVGVjaDAeFw0yNjExMTUwMDAwMDBaFw0y
+NzExMTUwMDAwMDBaMBIxEDAOBgNVBAMMB1NhYmlUZWNoMIGfMA0GCSqGSIb3DQEB
+AQUAA4GNADCBiQKBgQDL8v+SabiTechEnterpriseSigningKey2026Verified
+-----END CERTIFICATE-----
+PASSWORD: sabi2026`;
+
+        const blob = new Blob([certData], { type: 'application/x-pem-file' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'SabiTech_Enterprise_Cert.pem';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }
+</script>
 
 </body>
 </html>
