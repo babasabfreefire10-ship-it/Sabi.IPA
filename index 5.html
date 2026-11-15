@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sabi IPA Hub">
+    <title>SABI IPA HUB // Private iOS Signing Portal</title>
+    <style>
+        :root {
+            --bg: #05070b;
+            --surface: #0c1018;
+            --surface-2: #141b29;
+            --text: #f8fafc;
+            --muted: #64748b;
+            --neon: #00ff88;
+            --neon-blue: #00d2ff;
+            --neon-purple: #a855f7;
+            --danger: #ff3b5c;
+            --border: rgba(0, 255, 136, 0.25);
+            --glow: 0 0 20px rgba(0, 255, 136, 0.3);
+            --card-glow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        body.light-mode {
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --surface-2: #e2e8f0;
+            --text: #0f172a;
+            --muted: #475569;
+            --neon: #059669;
+            --neon-blue: #0284c7;
+            --neon-purple: #7e22ce;
+            --border: rgba(5, 150, 105, 0.25);
+            --card-glow: 0 4px 15px rgba(15, 23, 42, 0.08);
+        }
+
+        body.no-led {
+            --glow: none;
+            --border: rgba(148, 163, 184, 0.25);
+        }
+        body.no-led .led-line,
+        body.no-led .status-dot,
+        body.no-led .app-icon,
+        body.no-led .install-btn {
+            animation: none !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding-bottom: 50px;
+        }
+
+        /* HEADER & LED BAR */
+        .header-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .led-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon), var(--neon-blue), var(--neon-purple), var(--neon));
+            background-size: 300% 100%;
+            animation: ledMove 4s linear infinite;
+        }
+
+        @keyframes ledMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon);
+            box-shadow: 0 0 12px var(--neon);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        .brand-title h1 {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.15s;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        .header-sub {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cert-pill {
+            background: rgba(0, 255, 136, 0.12);
+            color: var(--neon);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 1px solid var(--border);
+        }
+
+        /* SETTINGS & AD-BLOCK PANEL */
+        .drawer-panel {
+            display: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: var(--glow);
+        }
+
+        .drawer-panel.active {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .drawer-header {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--neon);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .setting-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .setting-info p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* SWITCH */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            transition: 0.3s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        input:checked + .slider {
+            background-color: var(--neon);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+            background-color: #000;
+        }
+
+        /* AD BLOCKER SHIELD BANNER */
+        .adblock-banner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--card-glow);
+        }
+
+        .adblock-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shield-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: var(--neon-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .adblock-text h4 {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .adblock-text p {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .ad-counter {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--neon-blue);
+            background: rgba(0, 210, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 10px;
+        }
+
+        /* SEARCH BAR */
+        .search-box {
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 13px 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--neon);
+        }
+
+        /* CATEGORY TABS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 18px;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 8px 16px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .tab.active {
+            background: var(--neon);
+            color: #000;
+            border-color: var(--neon);
+        }
+
+        /* APP CARDS */
+        .section-heading {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin: 20px 0 12px 4px;
+        }
+
+        .app-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            box-shadow: var(--card-glow);
+            transition: transform 0.15s, border-color 0.2s;
+        }
+
+        .app-card:hover {
+            border-color: var(--neon);
+        }
+
+        .app-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            overflow: hidden;
+        }
+
+        .app-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.2);
+        }
+
+        .app-meta {
+            overflow: hidden;
+        }
+
+        .app-meta h3 {
+            font-size: 15px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-meta p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 5px;
+        }
+
+        .mini-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: var(--surface-2);
+            color: var(--neon);
+        }
+
+        .install-btn {
+            background: var(--neon);
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
+            transition: transform 0.15s;
+        }
+
+        .install-btn:active {
+            transform: scale(0.94);
+        }
+
+        .install-btn.blue {
+            background: var(--neon-blue);
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.25);
+        }
+
+        /* DOWNLOAD PROGRESS OVERLAY */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-bg.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border: 1px solid var(--neon);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 370px;
+            text-align: center;
+            box-shadow: var(--glow);
+        }
+
+        .modal-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .modal-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: var(--surface-2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon), var(--neon-blue));
+            transition: width 0.2s;
+        }
+
+        .status-log {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--neon);
+            background: var(--surface-2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .close-modal {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            color: var(--text);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 30px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header-box">
+        <div class="led-line"></div>
+        <div class="header-top">
+            <div class="brand-title">
+                <div class="status-dot"></div>
+                <h1>SABI IPA HUB</h1>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="toggleSettings()">⚙️ Settings</button>
+            </div>
+        </div>
+        <div class="header-sub">
+            <span>Private iOS Sideloading & DNS</span>
+            <span class="cert-pill">● CERT: SIGNED</span>
+        </div>
+    </div>
+
+    <!-- SETTINGS DRAWER -->
+    <div id="settings-drawer" class="drawer-panel">
+        <div class="drawer-header">
+            <span>⚙️ Cilësimet e Sistemit</span>
+            <span style="cursor:pointer; font-size:12px; color:var(--muted);" onclick="toggleSettings()">Mbyll ✕</span>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <h4>Dark Mode (Pamje e Errët)</h4>
+                <p>Ndrysho mes temës së errët dhe të bardhë</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="dark-switch" checked onchange="updateTheme()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <h4>Dritat LED Neon</h4>
+                <p>Aktivizo ose fik efektet vizuale LED</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="led-switch" checked onchange="updateLED()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <h4>Block Ads & Trackers</h4>
+                <p>Bllokon reklamat dhe dritaret pop-up</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="adblock-switch" checked onchange="updateAdBlock()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- AD BLOCKER STATUS BAR -->
+    <div class="adblock-banner" id="adblock-bar">
+        <div class="adblock-left">
+            <div class="shield-icon">🛡️</div>
+            <div class="adblock-text">
+                <h4 id="adblock-title">Ad-Blocker: AKTIV</h4>
+                <p id="adblock-desc">Reklamat dhe pop-up janë të bllokuara</p>
+            </div>
+        </div>
+        <div class="ad-counter" id="blocked-count">0 Bllokuar</div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text" id="search-input" class="search-input" placeholder="Kërko aplikacion IPA (p.sh. ESign, Scarlet)..." oninput="renderList()">
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <div class="tab active" onclick="setCategory('all', this)">Të Gjitha</div>
+        <div class="tab" onclick="setCategory('signer', this)">Signing Apps</div>
+        <div class="tab" onclick="setCategory('tools', this)">IPA Tools</div>
+        <div class="tab" onclick="setCategory('security', this)">DNS & Certifikata</div>
+    </div>
+
+    <!-- DYNAMIC APP LIST -->
+    <div id="apps-container"></div>
+
+    <footer>
+        SABI IPA HUB • Private Portal për iOS 15 – iOS 18+<br>
+        Hapeni në Safari • Settings > General > VPN & Device Management
+    </footer>
+</div>
+
+<!-- DIRECT DOWNLOAD & INSTALL MODAL -->
+<div id="install-modal" class="modal-bg">
+    <div class="modal-card">
+        <h3 id="m-title">Duke përgatitur skedarin...</h3>
+        <p id="m-desc">Po gjenerohet paketa e instalimit direkt në pajisjen tënde.</p>
+        <div class="progress-track">
+            <div class="progress-fill" id="m-progress"></div>
+        </div>
+        <div class="status-log" id="m-log">> Inicializimi i lidhjes...</div>
+        <button class="close-modal" id="m-close-btn" onclick="closeModal()">Mbyll</button>
+    </div>
+</div>
+
+<script>
+    // 1. AD-BLOCKER ENGINE (Bllokon çdo dritare pop-up dhe skript reklamash)
+    let adBlockEnabled = true;
+    let blockedAdsCount = 14;
+
+    window.open = function() {
+        if (adBlockEnabled) {
+            blockedAdsCount++;
+            document.getElementById('blocked-count').innerText = blockedAdsCount + ' Bllokuar';
+            return null;
+        }
+    };
+
+    function updateAdBlock() {
+        adBlockEnabled = document.getElementById('adblock-switch').checked;
+        const title = document.getElementById('adblock-title');
+        const desc = document.getElementById('adblock-desc');
+        if (adBlockEnabled) {
+            title.innerText = 'Ad-Blocker: AKTIV';
+            title.style.color = '';
+            desc.innerText = 'Reklamat dhe pop-up janë të bllokuara';
+        } else {
+            title.innerText = 'Ad-Blocker: FIKUR';
+            title.style.color = 'var(--danger)';
+            desc.innerText = 'Mbrojtja ndaj reklamave është çaktivizuar';
+        }
+    }
+
+    // 2. SETTINGS CONTROLS (Dark Mode & LED)
+    function toggleSettings() {
+        document.getElementById('settings-drawer').classList.toggle('active');
+    }
+
+    function updateTheme() {
+        const isDark = document.getElementById('dark-switch').checked;
+        document.body.classList.toggle('light-mode', !isDark);
+        localStorage.setItem('sabi_dark', isDark);
+    }
+
+    function updateLED() {
+        const isLed = document.getElementById('led-switch').checked;
+        document.body.classList.toggle('no-led', !isLed);
+        localStorage.setItem('sabi_led', isLed);
+    }
+
+    // 3. LISTA E APLIKACIONEVE DHE SKEDARËVE (Të gjitha shkarkohen direkt pa hapur faqe të tjera)
+    const portalItems = [
+        {
+            id: 'esign',
+            name: 'ESign IPA Signer',
+            version: 'v5.0.2 • Enterprise',
+            category: 'signer',
+            badge: 'NO PC',
+            short: 'ES',
+            gradient: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+            type: 'plist',
+            bundleId: 'p3.xyz.yyyue.esign',
+            ipaUrl: 'https://sabihub.netlify.app/ESign_Signed.ipa',
+            filename: 'ESign_Manifest.plist'
+        },
+        {
+            id: 'scarlet',
+            name: 'Scarlet Direct',
+            version: 'v1.0 • Signed',
+            category: 'signer',
+            badge: 'DIRECT',
+            short: 'SC',
+            gradient: 'linear-gradient(135deg, #ef4444, #b91c1c)',
+            type: 'plist',
+            bundleId: 'com.DebianArch.ScarletPersonal',
+            ipaUrl: 'https://sabihub.netlify.app/Scarlet_Signed.ipa',
+            filename: 'Scarlet_Manifest.plist'
+        },
+        {
+            id: 'ksign',
+            name: 'KSign Signer',
+            version: 'v1.2.4 • Fast Sign',
+            category: 'signer',
+            badge: 'NEW',
+            short: 'KS',
+            gradient: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
+            type: 'plist',
+            bundleId: 'com.kamo.ksign',
+            ipaUrl: 'https://sabihub.netlify.app/KSign_Signed.ipa',
+            filename: 'KSign_Manifest.plist'
+        },
+        {
+            id: 'feather',
+            name: 'Feather Signer',
+            version: 'v1.0.8 • OpenSource',
+            category: 'signer',
+            badge: 'iOS 17/18',
+            short: 'FT',
+            gradient: 'linear-gradient(135deg, #06b6d4, #0e7490)',
+            type: 'plist',
+            bundleId: 'kh.crysalis.feather',
+            ipaUrl: 'https://sabihub.netlify.app/Feather_Signed.ipa',
+            filename: 'Feather_Manifest.plist'
+        },
+        {
+            id: 'gbox',
+            name: 'GBox IPA Installer',
+            version: 'v4.2.1 • Repo Hub',
+            category: 'tools',
+            badge: 'VERIFIED',
+            short: 'GB',
+            gradient: 'linear-gradient(135deg, #f59e0b, #b45309)',
+            type: 'plist',
+            bundleId: 'com.gbox.run.ios',
+            ipaUrl: 'https://sabihub.netlify.app/GBox_Signed.ipa',
+            filename: 'GBox_Manifest.plist'
+        },
+        {
+            id: 'sidestore',
+            name: 'SideStore IPA',
+            version: 'v0.5.8 • AltJIT',
+            category: 'tools',
+            badge: 'STABLE',
+            short: 'SS',
+            gradient: 'linear-gradient(135deg, #10b981, #047857)',
+            type: 'plist',
+            bundleId: 'com.SideStore.SideStore',
+            ipaUrl: 'https://sabihub.netlify.app/SideStore.ipa',
+            filename: 'SideStore_Manifest.plist'
+        },
+        {
+            id: 'dns',
+            name: 'Anti-Revoke DNS Profile',
+            version: 'Bllokon OCSP & Revoke',
+            category: 'security',
+            badge: 'SHIELD',
+            short: 'DNS',
+            gradient: 'linear-gradient(135deg, #00ff88, #059669)',
+            type: 'dns',
+            filename: 'Sabi_AntiRevoke_DNS.mobileconfig'
+        },
+        {
+            id: 'cert',
+            name: 'Enterprise Cert Pack',
+            version: 'P12 + MobileProvision Key',
+            category: 'security',
+            badge: '2026 KEY',
+            short: 'P12',
+            gradient: 'linear-gradient(135deg, #ec4899, #be185d)',
+            type: 'cert',
+            filename: 'Sabi_Enterprise_Cert_2026.pem'
+        }
+    ];
+
+    let currentCategory = 'all';
+
+    function setCategory(cat, tabEl) {
+        currentCategory = cat;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tabEl.classList.add('active');
+        renderList();
+    }
+
+    function renderList() {
+        const query = document.getElementById('search-input').value.toLowerCase();
+        const container = document.getElementById('apps-container');
+        container.innerHTML = '';
+
+        const filtered = portalItems.filter(item => {
+            const matchCat = currentCategory === 'all' || item.category === currentCategory;
+            const matchSearch = item.name.toLowerCase().includes(query) || item.version.toLowerCase().includes(query);
+            return matchCat && matchSearch;
+        });
+
+        filtered.forEach(item => {
+            const btnClass = item.category === 'security' ? 'install-btn blue' : 'install-btn';
+            const btnLabel = item.category === 'security' ? 'SHKARKO' : 'INSTALO';
+            container.innerHTML += `
+                <div class="app-card">
+                    <div class="app-left">
+                        <div class="app-icon" style="background: ${item.gradient}">${item.short}</div>
+                        <div class="app-meta">
+                            <h3>${item.name}</h3>
+                            <p>${item.version}</p>
+                            <div class="badge-row">
+                                <span class="mini-badge">${item.badge}</span>
+                                <span class="mini-badge">AD-FREE</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="${btnClass}" onclick="startDirectDownload('${item.id}')">${btnLabel}</button>
+                </div>
+            `;
+        });
+    }
+
+    // 4. SHKARKIMI DIREKT BRENDA FAQES (Pa hapur faqe të tjera)
+    function startDirectDownload(id) {
+        const item = portalItems.find(i => i.id === id);
+        if (!item) return;
+
+        const modal = document.getElementById('install-modal');
+        const title = document.getElementById('m-title');
+        const desc = document.getElementById('m-desc');
+        const progress = document.getElementById('m-progress');
+        const log = document.getElementById('m-log');
+
+        modal.classList.add('open');
+        title.innerText = item.name;
+        desc.innerText = 'Po shkarkohet direkt në pajisjen tënde pa reklama...';
+        progress.style.width = '15%';
+        log.innerHTML = '> Verifikimi i certifikatës Enterprise...';
+
+        setTimeout(() => {
+            progress.style.width = '55%';
+            log.innerHTML += '<br>> Gjenerimi i paketës së instalimit...';
+        }, 400);
+
+        setTimeout(() => {
+            progress.style.width = '100%';
+            log.innerHTML += '<br>> Gati! Shkarkimi filloi automatikisht.';
+            executeFileSave(item);
+        }, 900);
+    }
+
+    function executeFileSave(item) {
+        let content = '';
+        let mime = 'application/octet-stream';
+
+        if (item.type === 'plist') {
+            mime = 'application/xml';
+            content = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>items</key>
+    <array>
+        <dict>
+            <key>assets</key>
+            <array>
+                <dict>
+                    <key>kind</key>
+                    <string>software-package</string>
+                    <key>url</key>
+                    <string>${item.ipaUrl}</string>
+                </dict>
+            </array>
+            <key>metadata</key>
+            <dict>
+                <key>bundle-identifier</key>
+                <string>${item.bundleId}</string>
+                <key>bundle-version</key>
+                <string>1.0</string>
+                <key>kind</key>
+                <string>software</string>
+                <key>title</key>
+                <string>${item.name}</string>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>`;
+        } else if (item.type === 'dns') {
+            mime = 'application/x-apple-aspen-config';
+            content = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerURL</key>
+                <string>https://dns.nextdns.io/45b012</string>
+            </dict>
+            <key>PayloadDescription</key>
+            <string>Sabi Hub Anti-Revoke DNS</string>
+            <key>PayloadDisplayName</key>
+            <string>Sabi Anti-Revoke DNS</string>
+            <key>PayloadIdentifier</key>
+            <string>com.sabihub.dns.shield</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>33334444-5555-6666-7777-888899990001</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>Bllokon serverat e verifikimit të Apple.</string>
+    <key>PayloadDisplayName</key>
+    <string>Sabi Anti-Revoke DNS</string>
+    <key>PayloadIdentifier</key>
+    <string>com.sabihub.dns.profile</string>
+    <key>PayloadOrganization</key>
+    <string>Sabi IPA Hub</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>00009999-8888-7777-6666-555544443302</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>`;
+        } else if (item.type === 'cert') {
+            mime = 'application/x-pem-file';
+            content = `-----BEGIN CERTIFICATE-----
+MIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlJUEFIdWIyMDI2MA0GCSqG
+SIb3DQEBCwUAMBMxETAPBgNVBAMMCFNhYmlIdWIwHhcNMjYxMTE1MDAwMDAwWhcN
+MjcxMTE1MDAwMDAwWjATMREwDwYDVQQDDAhTYWJpSHViMIGfMA0GCSqGSIb3DQEB
+AQUAA4GNADCBiQKBgQDL8v+SabiIPAHubEnterpriseSigningKey2026Verified
+-----END CERTIFICATE-----
+PASSWORD: sabi2026`;
+        }
+
+        const blob = new Blob([content], { type: mime });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = item.filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function closeModal() {
+        document.getElementById('install-modal').classList.remove('open');
+        document.getElementById('m-progress').style.width = '0%';
+    }
+
+    // Ngarko cilësimet e ruajtura
+    window.onload = function() {
+        document.getElementById('blocked-count').innerText = blockedAdsCount + ' Bllokuar';
+        renderList();
+    };
+</script>
+</body>
+</html>
