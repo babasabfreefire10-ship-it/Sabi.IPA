@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <!-- 1. Aplikacioni në Ekran (Full Screen) -->
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+            <string>Sabi Crypto App</string>
+            <key>PayloadDescription</key>
+            <string>Instalon aplikacionin Sabi Crypto në ekranin kryesor</string>
+            <key>PayloadDisplayName</key>
+            <string>Sabi Crypto App</string>
+            <key>PayloadIdentifier</key>
+            <string>com.sabihacker.app.clip</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
+            <key>PayloadUUID</key>
+            <string>11112222-3333-4444-5555-666677778888</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>Precomposed</key>
+            <true/>
+            <key>URL</key>
+            <string>https://netlify.app</string>
+        </dict>
+        <!-- 2. Certifikata e Sigurisë DNS Anti-Revoke -->
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerURL</key>
+                <string>https://nextdns.io</string>
+            </dict>
+            <key>PayloadDescription</key>
+            <string>Aktivizon certifikatën e mbrojtjes DNS</string>
+            <key>PayloadDisplayName</key>
+            <string>Sabi Enterprise DNS Shield</string>
+            <key>PayloadIdentifier</key>
+            <string>com.sabihacker.dns.shield</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>99998888-7777-6666-5555-444433332222</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>Paketë e plotë: Aplikacioni Sabi Crypto dhe Certifikata e Mbrojtjes DNS.</string>
+    <key>PayloadDisplayName</key>
+    <string>Sabi Master Certificate & App</string>
+    <key>PayloadIdentifier</key>
+    <string>com.sabihacker.master.profile</string>
+    <key>PayloadOrganization</key>
+    <string>Sabi Enterprise Corp</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>AAAA1111-BBBB-2222-CCCC-3333DDDD4444</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>
