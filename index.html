@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabi Tech — Signing Apps & Certificates</title>
+    <style>
+        :root {
+            --bg: #07080c;
+            --card: #11131c;
+            --border: #1e2230;
+            --accent: #3b82f6;
+            --green: #10b981;
+            --red: #ef4444;
+            --text: #f1f5f9;
+            --muted: #64748b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; }
+        .wrap { width: 100%; max-width: 500px; }
+        
+        header { text-align: center; padding: 25px 0; }
+        header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+        header p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+        .cert-status { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 12px 16px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 13px; }
+        .dot { height: 8px; width: 8px; background: var(--green); border-radius: 50%; display: inline-block; margin-right: 6px; box-shadow: 0 0 8px var(--green); }
+
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+        .tab { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        .app-item { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .app-left { display: flex; align-items: center; gap: 12px; }
+        .icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; color: #fff; }
+        .info h3 { font-size: 15px; font-weight: 600; }
+        .info p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+        .btn { background: #1e293b; color: var(--accent); text-decoration: none; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; transition: 0.2s; }
+        .btn:hover { background: var(--accent); color: #fff; }
+        .btn.green { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+
+        .section-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 24px 0 12px; font-weight: 700; }
+        footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 30px; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <header>
+        <h1>Sabi Tech</h1>
+        <p>Direct Signing Apps, Certificates & DNS</p>
+    </header>
+
+    <div class="cert-status">
+        <span><span class="dot"></span>Certifikata Aktive: <strong>Enterprise Corp</strong></span>
+        <span style="color: var(--green); font-weight: 700;">SIGNED</span>
+    </div>
+
+    <!-- Kategoritë -->
+    <div class="tabs">
+        <div class="tab active" onclick="filterApps('all', this)">Të Gjitha</div>
+        <div class="tab" onclick="filterApps('signer', this)">Signing Apps</div>
+        <div class="tab" onclick="filterApps('music', this)">Aplikacionet e Mia</div>
+    </div>
+
+    <!-- Lista e Aplikacioneve ngarkohet automatikisht nga JavaScript -->
+    <div id="app-list"></div>
+
+    <div class="section-label">Certifikata & Anti-Revoke</div>
+
+    <!-- Shkarkimi i Certifikatës për ESign / Scarlet -->
+    <div class="app-item">
+        <div class="app-left">
+            <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #b45309);">P12</div>
+            <div class="info">
+                <h3>Certifikata ZIP (P12 + Provision)</h3>
+                <p>Për t'u përdorur brenda ESign / KSign</p>
+            </div>
+        </div>
+        <a href="certificates.zip" class="btn">Shkarko</a>
+    </div>
+
+    <!-- Profili DNS -->
+    <div class="app-item">
+        <div class="app-left">
+            <div class="icon" style="background: linear-gradient(135deg, #10b981, #047857);">DNS</div>
+            <div class="info">
+                <h3>Anti-Revoke DNS Profile</h3>
+                <p>Bllokon serverat e Apple (iOS 15–18)</p>
+            </div>
+        </div>
+        <a href="anti-revoke.mobileconfig" class="btn green">Instalo</a>
+    </div>
+
+    <footer>
+        Hapeni në Safari • Settings > General > VPN & Device Management
+    </footer>
+</div>
+
+<script>
+    // Këtu shton ose ndryshon aplikacionet e portalit tënd
+    const appsData = [
+        {
+            name: "Sabi Music",
+            desc: "v1.0 • Offline & Crypto UI",
+            category: "music",
+            color: "linear-gradient(135deg, #f3ba2f, #d97706)",
+            short: "SM",
+            plist: "https://netlify.app"
+        },
+        {
+            name: "ESign",
+            desc: "v5.0.2 • IPA Signer & Installer",
+            category: "signer",
+            color: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+            short: "ES",
+            plist: "https://netlify.app"
+        },
+        {
+            name: "Scarlet",
+            desc: "Direct Install • No PC",
+            category: "signer",
+            color: "linear-gradient(135deg, #ef4444, #b91c1c)",
+            short: "SC",
+            plist: "https://netlify.app"
+        },
+        {
+            name: "KSign",
+            desc: "v1.2 • Fast Sideloading",
+            category: "signer",
+            color: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+            short: "KS",
+            plist: "https://netlify.app"
+        },
+        {
+            name: "Feather",
+            desc: "Modern On-Device Signer",
+            category: "signer",
+            color: "linear-gradient(135deg, #06b6d4, #0e7490)",
+            short: "FT",
+            plist: "https://netlify.app"
+        }
+    ];
+
+    function renderApps(filter = 'all') {
+        const container = document.getElementById('app-list');
+        container.innerHTML = '';
+
+        const filtered = filter === 'all' ? appsData : appsData.filter(a => a.category === filter);
+
+        filtered.forEach(app => {
+            container.innerHTML += `
+                <div class="app-item">
+                    <div class="app-left">
+                        <div class="icon" style="background: ${app.color}">${app.short}</div>
+                        <div class="info">
+                            <h3>${app.name}</h3>
+                            <p>${app.desc}</p>
+                        </div>
+                    </div>
+                    <a href="itms-services://?action=download-manifest&url=${app.plist}" class="btn">Instalo</a>
+                </div>
+            `;
+        });
+    }
+
+    function filterApps(cat, el) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        renderApps(cat);
+    }
+
+    renderApps();
+</script>
+</body>
+</html>
