@@ -6,22 +6,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sabi Hub">
-    <title>SABI // DIRECT INSTALL iOS OTA HUB</title>
+    <title>SABI // DIRECT OTA & API SIGNING HUB</title>
     <style>
         :root {
-            --bg: #04060a;
-            --surface: #0c111b;
-            --surface-2: #141d2e;
+            --bg: #040609;
+            --surface: #0b1018;
+            --surface-2: #131b29;
             --text: #f8fafc;
             --muted: #64748b;
             --neon: #00f3ff;
             --green: #00ff66;
             --amber: #f59e0b;
-            --purple: #a855f7;
-            --danger: #ef4444;
             --border: rgba(0, 243, 255, 0.25);
-            --glow: 0 0 22px rgba(0, 243, 255, 0.32);
-            --green-glow: 0 0 18px rgba(0, 255, 102, 0.28);
+            --glow: 0 0 20px rgba(0, 243, 255, 0.3);
         }
 
         body.light-mode {
@@ -33,13 +30,11 @@
             --neon: #0284c7;
             --green: #059669;
             --amber: #d97706;
-            --purple: #7e22ce;
             --border: rgba(2, 132, 199, 0.25);
         }
 
         body.no-led {
             --glow: none;
-            --green-glow: none;
             --border: rgba(148, 163, 184, 0.25);
         }
         body.no-led .led-bar, body.no-led .pulse-dot {
@@ -68,10 +63,9 @@
         .app-shell {
             width: 100%;
             max-width: 480px;
-            padding-bottom: 70px;
+            padding-bottom: 60px;
         }
 
-        /* HEADER */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -89,11 +83,11 @@
         .led-bar {
             position: absolute;
             bottom: 0; left: 0; height: 3px; width: 100%;
-            background: linear-gradient(90deg, var(--neon), var(--green), var(--purple), var(--neon));
-            background-size: 300% 100%;
-            animation: flow 3.5s linear infinite;
+            background: linear-gradient(90deg, var(--neon), var(--green), var(--neon));
+            background-size: 200% 100%;
+            animation: flow 3s linear infinite;
         }
-        @keyframes flow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+        @keyframes flow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
         .brand {
             display: flex;
@@ -101,7 +95,6 @@
             gap: 10px;
             font-weight: 900;
             font-size: 17px;
-            letter-spacing: 0.5px;
         }
 
         .pulse-dot {
@@ -124,16 +117,12 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
         .icon-btn.primary {
             background: rgba(0, 243, 255, 0.15);
             color: var(--neon);
         }
 
-        /* TELEMETRY */
         .telemetry-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -151,7 +140,6 @@
         .tele-label {
             font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
             color: var(--muted);
             font-weight: 700;
             margin-bottom: 3px;
@@ -161,31 +149,20 @@
             font-size: 13px;
             font-weight: 800;
             color: var(--neon);
-            font-variant-numeric: tabular-nums;
         }
 
-        .status-strip {
-            background: var(--surface);
-            border: 1px solid var(--border);
+        .api-banner {
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid rgba(0, 255, 102, 0.25);
             border-radius: 14px;
             padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 14px;
-            font-size: 12px;
-        }
-
-        .badge-ads {
-            background: rgba(0, 255, 102, 0.12);
-            color: var(--green);
-            padding: 3px 8px;
-            border-radius: 8px;
-            font-weight: 700;
             font-size: 11px;
         }
 
-        /* DRAWERS */
         .drawer-panel {
             display: none;
             background: var(--surface);
@@ -195,8 +172,7 @@
             margin-bottom: 16px;
             box-shadow: var(--glow);
         }
-        .drawer-panel.open { display: block; animation: slideIn 0.2s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        .drawer-panel.open { display: block; }
 
         .setting-row {
             display: flex;
@@ -224,60 +200,7 @@
             margin-bottom: 10px;
             outline: none;
         }
-        .form-input:focus { border-color: var(--neon); }
 
-        .file-upload-box {
-            border: 1px dashed var(--neon);
-            background: rgba(0, 243, 255, 0.06);
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: var(--neon);
-            font-weight: 700;
-            display: block;
-        }
-
-        /* SEARCH & TABS */
-        .search-box {
-            width: 100%;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 12px 16px;
-            border-radius: 14px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            outline: none;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-        }
-        .tab {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .tab.active {
-            background: var(--neon);
-            color: #000;
-            border-color: var(--neon);
-        }
-
-        /* APP CARDS */
         .app-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -309,9 +232,6 @@
         .app-info h3 {
             font-size: 15px;
             font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .app-info p {
             font-size: 11px;
@@ -329,86 +249,29 @@
             font-weight: 800;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
             flex-shrink: 0;
         }
-        .install-btn:active { transform: scale(0.96); }
         .install-btn.green { background: var(--green); }
-        .install-btn.amber { background: var(--amber); }
-
-        /* CONSOLE */
-        .console-box {
-            background: #020305;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px;
-            margin-top: 18px;
-            font-family: "Courier New", monospace;
-            font-size: 11px;
-            color: var(--green);
-            max-height: 120px;
-            overflow-y: auto;
-            line-height: 1.5;
-        }
-
-        /* MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(6px);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-box {
-            background: var(--surface);
-            border: 1px solid var(--neon);
-            border-radius: 22px;
-            padding: 22px;
-            max-width: 380px;
-            width: 100%;
-            box-shadow: var(--glow);
-        }
-        .modal-box h3 { font-size: 17px; color: var(--neon); margin-bottom: 8px; }
-        .modal-box p { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
-        .code-preview {
-            background: var(--surface-2);
-            padding: 10px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 10px;
-            max-height: 140px;
-            overflow-y: auto;
-            margin-bottom: 14px;
-            color: var(--text);
-            white-space: pre-wrap;
-        }
     </style>
 </head>
 <body>
 
 <div class="app-shell">
-    <!-- HEADER -->
     <div class="top-bar">
         <div class="brand">
             <div class="pulse-dot"></div>
             <span>SABI OTA HUB</span>
         </div>
         <div class="header-actions">
-            <button class="icon-btn primary" onclick="toggleDrawer('add-drawer')">➕ Shto IPA</button>
+            <button class="icon-btn primary" onclick="toggleDrawer('add-drawer')">➕ Shto Link</button>
             <button class="icon-btn" onclick="toggleDrawer('settings-drawer')">⚙️ Settings</button>
         </div>
         <div class="led-bar"></div>
     </div>
 
-    <!-- TELEMETRY -->
     <div class="telemetry-grid">
         <div class="tele-card">
-            <div class="tele-label">Ora & Data Reale</div>
+            <div class="tele-label">Ora & Data</div>
             <div class="tele-val" id="live-clock">--:--:--</div>
         </div>
         <div class="tele-card">
@@ -417,434 +280,124 @@
         </div>
     </div>
 
-    <!-- STATUS BAR -->
-    <div class="status-strip">
-        <span>Certifikata: <strong style="color: var(--green);">ENTERPRISE SIGNED</strong></span>
-        <span class="badge-ads" id="ads-counter">🛡️ Ads Blocked: 19</span>
+    <div class="api-banner">
+        <span>🔑 API Key: <strong id="api-display" style="color: var(--green);">sk-sabi-live-98a7f6d5e4c3b2a1</strong></span>
+        <span style="color: var(--neon); font-weight: 800;">ACTIVE</span>
     </div>
 
-    <!-- SETTINGS DRAWER -->
+    <!-- SETTINGS & API KEY -->
     <div id="settings-drawer" class="drawer-panel">
-        <h4 style="font-size: 14px; color: var(--neon); margin-bottom: 10px;">⚙️ Cilësimet e Sistemit</h4>
+        <h4 style="font-size: 14px; color: var(--neon); margin-bottom: 10px;">⚙️ Cilësimet & API Key</h4>
         <div class="setting-row">
-            <div>
-                <div style="font-weight: 700; font-size: 13px;">Dark Mode (Errët)</div>
-                <div style="font-size: 11px; color: var(--muted);">Ndrysho pamjen e errët ose të bardhë</div>
-            </div>
+            <span style="font-size: 13px; font-weight: 700;">Dark Mode</span>
             <label class="switch">
-                <input type="checkbox" id="dark-toggle" checked onchange="toggleDarkMode()">
+                <input type="checkbox" id="dark-toggle" checked onchange="document.body.classList.toggle('light-mode', !this.checked)">
                 <span class="slider"></span>
             </label>
         </div>
         <div class="setting-row">
-            <div>
-                <div style="font-weight: 700; font-size: 13px;">Dritat LED Neon</div>
-                <div style="font-size: 11px; color: var(--muted);">Efektet e ndriçimit dhe shiriti LED</div>
-            </div>
+            <span style="font-size: 13px; font-weight: 700;">Dritat LED Neon</span>
             <label class="switch">
-                <input type="checkbox" id="led-toggle" checked onchange="toggleLED()">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="setting-row">
-            <div>
-                <div style="font-weight: 700; font-size: 13px;">Block Ads Shield</div>
-                <div style="font-size: 11px; color: var(--muted);">Bllokon dritaret pop-up dhe reklamat</div>
-            </div>
-            <label class="switch">
-                <input type="checkbox" id="ads-toggle" checked onchange="toggleAds()">
+                <input type="checkbox" id="led-toggle" checked onchange="document.body.classList.toggle('no-led', !this.checked)">
                 <span class="slider"></span>
             </label>
         </div>
         <div style="margin-top: 12px;">
-            <div class="tele-label">Domeni i Serverit Tënd (p.sh. sabihub.netlify.app)</div>
-            <input type="text" id="host-domain" class="form-input" value="https://sabihub.netlify.app" onchange="updateDomain()">
-        </div>
-        <button class="install-btn" style="width: 100%;" onclick="syncUpdates()">🔄 Përditëso Linqet OTA (Auto-Update)</button>
-    </div>
+Use code with caution.
+API KEY / SIGNING TOKEN:
 
-    <!-- ADD IPA DRAWER -->
-    <div id="add-drawer" class="drawer-panel">
-        <h4 style="font-size: 14px; color: var(--neon); margin-bottom: 10px;">➕ Shto IPA Direkt (Nga Telefoni ose Link)</h4>
-        <label class="file-upload-box" for="ipa-file-input">
-            📁 Zgjidh skedarin .IPA nga Files (iPhone)
-            <input type="file" id="ipa-file-input" accept=".ipa,.zip" style="display:none;" onchange="handleFileSelect(event)">
-        </label>
-        <input type="text" id="ipa-name" class="form-input" placeholder="Emri i Aplikacionit (p.sh. Spotify++)">
-        <input type="text" id="ipa-ver" class="form-input" placeholder="Versioni & Madhësia (p.sh. v8.9 • 65 MB)">
-        <input type="text" id="ipa-plist-url" class="form-input" placeholder="Linku i manifest.plist (p.sh. https://.../app.plist)">
-        <button class="install-btn green" style="width: 100%;" onclick="saveCustomIPA()">Shto me Direct Install (itms-services)</button>
-    </div>
+Ruaj & Gjenero API Key të Ri
 
-    <!-- SEARCH & FILTER -->
-    <input type="text" id="search-input" class="search-box" placeholder="🔍 Kërko aplikacion (ESign, Scarlet, KSign, IPA)..." onkeyup="renderApps()">
+➕ Shto Link të Ri (.plist)
 
-    <div class="tabs">
-        <div class="tab active" onclick="setFilter('all', this)">Të Gjitha</div>
-        <div class="tab" onclick="setFilter('signer', this)">Direct Install Apps</div>
-        <div class="tab" onclick="setFilter('custom', this)">IPA të Mia</div>
-        <div class="tab" onclick="setFilter('cert', this)">Certifikata & Plist</div>
-    </div>
 
-    <!-- APPS CONTAINER -->
-    <div id="apps-container"></div>
 
-    <!-- LIVE CONSOLE -->
-    <div class="console-box" id="sys-console">
-        > [OTA] Motori itms-services:// u inicializua.<br>
-        > [SYS] Gati për Direct Install në iOS 26.4.
-    </div>
-</div>
-
-<!-- MODAL FOR PLIST & CERT EXPORT -->
-<div id="info-modal" class="modal-overlay">
-    <div class="modal-box">
-        <h3 id="modal-title">Skedari Manifest (.plist)</h3>
-        <p id="modal-desc"></p>
-        <div class="code-preview" id="modal-code"></div>
-        <div style="display: flex; gap: 8px;">
-            <button class="install-btn green" style="flex:1;" id="modal-download-btn">Shkarko Skedarin</button>
-            <button class="install-btn" style="background: var(--surface-2); color: var(--text);" onclick="closeModal()">Mbyll</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    // 1. REALTIME CLOCK
-    function updateClock() {
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('sq-AL', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        const timeStr = now.toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        document.getElementById('live-clock').innerText = `${dateStr} • ${timeStr}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    function logMsg(msg) {
-        const box = document.getElementById('sys-console');
-        const time = new Date().toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        box.innerHTML += `<br>> [${time}] ${msg}`;
-        box.scrollTop = box.scrollHeight;
-    }
-
-    // 2. DIRECT INSTALL OTA APPS (itms-services://)
-    let baseDomain = localStorage.getItem('sabi_domain') || window.location.origin;
-    if (baseDomain === 'null' || baseDomain.startsWith('file://')) {
-        baseDomain = 'https://sabihub.netlify.app';
-    }
-    document.getElementById('host-domain').value = baseDomain;
-
-    const defaultApps = [
-        {
-            id: 1,
-            name: "ESign Signer (Direct)",
-            meta: "v5.0.2 • OTA Direct Install",
-            cat: "signer",
-            short: "ES",
-            grad: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
-            plistFile: "esign.plist",
-            ipaFile: "ESign_Signed.ipa",
-            bundleId: "p3.xyz.yyyue.esign"
-        },
-        {
-            id: 2,
-            name: "Scarlet Direct",
-            meta: "v1.0 • OTA Direct Install",
-            cat: "signer",
-            short: "SC",
-            grad: "linear-gradient(135deg, #ef4444, #b91c1c)",
-            plistFile: "scarlet.plist",
-            ipaFile: "Scarlet_Signed.ipa",
-            bundleId: "com.DebianArch.ScarletPersonal"
-        },
-        {
-            id: 3,
-            name: "KSign Signer",
-            meta: "v1.2 • OTA Direct Install",
-            cat: "signer",
-            short: "KS",
-            grad: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
-            plistFile: "ksign.plist",
-            ipaFile: "KSign_Signed.ipa",
-            bundleId: "com.kamo.ksign"
-        },
-        {
-            id: 4,
-            name: "Feather Signer",
-            meta: "v1.1 • OTA Direct Install",
-            cat: "signer",
-            short: "FT",
-            grad: "linear-gradient(135deg, #06b6d4, #0e7490)",
-            plistFile: "feather.plist",
-            ipaFile: "Feather_Signed.ipa",
-            bundleId: "kh.crysalis.feather"
-        },
-        {
-            id: 5,
-            name: "GBox Sideloader",
-            meta: "v3.8 • OTA Direct Install",
-            cat: "signer",
-            short: "GB",
-            grad: "linear-gradient(135deg, #10b981, #047857)",
-            plistFile: "gbox.plist",
-            ipaFile: "GBox_Signed.ipa",
-            bundleId: "com.gbox.run"
-        },
-        {
-            id: 6,
-            name: "SideStore OTA",
-            meta: "v0.5 • OTA Direct Install",
-            cat: "signer",
-            short: "SS",
-            grad: "linear-gradient(135deg, #f59e0b, #b45309)",
-            plistFile: "sidestore.plist",
-            ipaFile: "SideStore_Signed.ipa",
-            bundleId: "com.SideStore.SideStore"
-        }
-    ];
-
-    let customApps = JSON.parse(localStorage.getItem('sabi_ota_custom')) || [];
-    let currentFilter = 'all';
-    let adsBlocked = 19;
-
-    function updateDomain() {
-        let val = document.getElementById('host-domain').value.trim().replace(/\/$/, '');
-        if (!val.startsWith('http')) val = 'https://' + val;
-        baseDomain = val;
-        localStorage.setItem('sabi_domain', baseDomain);
-        renderApps();
-        logMsg(`Domeni OTA u përditësua në: ${baseDomain}`);
-    }
-
-    function renderApps() {
-        const container = document.getElementById('apps-container');
-        const query = document.getElementById('search-input').value.toLowerCase();
-        container.innerHTML = '';
-
-        const all = [...customApps, ...defaultApps];
-        const filtered = all.filter(app => {
-            const matchesCat = currentFilter === 'all' || app.cat === currentFilter || currentFilter === 'cert';
-            const matchesSearch = app.name.toLowerCase().includes(query) || app.meta.toLowerCase().includes(query);
-            return matchesCat && matchesSearch;
-        });
-
-        filtered.forEach(app => {
-            const manifestUrl = app.customPlistUrl ? app.customPlistUrl : `${baseDomain}/${app.plistFile}`;
-            const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestUrl)}`;
-
-            let rightButtons = '';
-            if (currentFilter === 'cert') {
-                rightButtons = `<button class="install-btn amber" onclick="exportManifest('${app.name}', '${app.bundleId}', '${app.ipaFile}', '${app.plistFile}')">GJENERO PLIST</button>`;
-            } else {
-                rightButtons = `
-                    <div style="display:flex; gap:6px; align-items:center;">
-                        <button class="icon-btn" style="padding:8px;" title="Shkarko .plist" onclick="exportManifest('${app.name}', '${app.bundleId}', '${app.ipaFile}', '${app.plistFile}')">📄</button>
-                        <a href="${itmsLink}" class="install-btn" onclick="logMsg('Po dërgohet komanda itms-services:// për ${app.name}')">INSTALO</a>
-                    </div>
-                `;
-            }
-
-            container.innerHTML += `
-                <div class="app-card">
-                    <div class="app-left">
-                        <div class="app-icon" style="background: ${app.grad}">${app.short}</div>
-                        <div class="app-info">
-                            <h3>${app.name}</h3>
-                            <p>${app.meta}</p>
-                        </div>
-                    </div>
-                    ${rightButtons}
-                </div>
-            `;
-        });
-
-        if (currentFilter === 'all' || currentFilter === 'cert') {
-            container.innerHTML += `
-                <div class="app-card" style="border-color: var(--amber);">
-                    <div class="app-left">
-                        <div class="app-icon" style="background: linear-gradient(135deg, #f59e0b, #b45309);">P12</div>
-                        <div class="app-info">
-                            <h3>Paketa e Certifikatës (.PEM)</h3>
-                            <p>Çelësi publik & struktura e firmosjes</p>
-                        </div>
-                    </div>
-                    <button class="install-btn amber" onclick="openCertModal()">SHKARKO</button>
-                </div>
-            `;
-        }
-    }
-
-    function setFilter(cat, el) {
-        currentFilter = cat;
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-        renderApps();
-    }
-
-    // 3. FILE PICKER & ADD CUSTOM IPA
-    function handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-        const cleanName = file.name.replace(/\.ipa$/i, '').replace(/\.zip$/i, '');
-        const plistName = `${cleanName.replace(/\s+/g, '')}.plist`;
-        document.getElementById('ipa-name').value = cleanName;
-        document.getElementById('ipa-ver').value = `v1.0 • ${sizeMB} MB (OTA Direct)`;
-        document.getElementById('ipa-plist-url').value = `${baseDomain}/${plistName}`;
-        logMsg(`U lexua skedari lokal: ${file.name} (${sizeMB} MB)`);
-    }
-
-    function saveCustomIPA() {
-        const name = document.getElementById('ipa-name').value.trim();
-        const ver = document.getElementById('ipa-ver').value.trim() || "v1.0 • Custom OTA";
-        const cleanSlug = name.replace(/\s+/g, '');
-        const plistUrl = document.getElementById('ipa-plist-url').value.trim() || `${baseDomain}/${cleanSlug}.plist`;
-
-        if (!name) {
-            alert("Shkruani emrin e aplikacionit ose zgjidhni një skedar .IPA!");
-            return;
-        }
-
-        const newApp = {
-            id: Date.now(),
-            name: name,
-            meta: ver,
-            cat: "custom",
-            short: name.substring(0, 2).toUpperCase(),
-            grad: "linear-gradient(135deg, #00f3ff, #0284c7)",
-            plistFile: `${cleanSlug}.plist`,
-            ipaFile: `${cleanSlug}.ipa`,
-            bundleId: `com.sabihub.${cleanSlug.toLowerCase()}`,
-            customPlistUrl: plistUrl
-        };
-
-        customApps.unshift(newApp);
-        localStorage.setItem('sabi_ota_custom', JSON.stringify(customApps));
-
-        document.getElementById('ipa-name').value = '';
-        document.getElementById('ipa-ver').value = '';
-        document.getElementById('ipa-plist-url').value = '';
-        toggleDrawer('add-drawer');
-        renderApps();
-        logMsg(`U shtua ${name} me lidhje itms-services://`);
-    }
-
-    // 4. MANIFEST GENERATOR (.PLIST)
-    function exportManifest(appName, bundleId, ipaFile, plistFile) {
-        const ipaFullUrl = `${baseDomain}/${ipaFile}`;
-        const plistXML = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>items</key>
-    <array>
-        <dict>
-            <key>assets</key>
-            <array>
-                <dict>
-                    <key>kind</key>
-                    <string>software-package</string>
-                    <key>url</key>
-                    <string>${ipaFullUrl}</string>
-                </dict>
-            </array>
-            <key>metadata</key>
-            <dict>
-                <key>bundle-identifier</key>
-                <string>${bundleId}</string>
-                <key>bundle-version</key>
-                <string>1.0</string>
-                <key>kind</key>
-                <string>software</string>
-                <key>title</key>
-                <string>${appName}</string>
-            </dict>
-        </dict>
-    </array>
-</dict>
-</plist>`;
-
-        document.getElementById('modal-title').innerText = `Skedari ${plistFile}`;
-        document.getElementById('modal-desc').innerText = `Shkarko këtë skedar (${plistFile}) dhe vendose në serverin tënd (${baseDomain}) bashkë me skedarin e firmosur ${ipaFile} që butoni INSTALO të punojë direkt:`;
-        document.getElementById('modal-code').innerText = plistXML;
-        document.getElementById('modal-download-btn').onclick = function() {
-            downloadFile(plistXML, plistFile);
-        };
-        document.getElementById('info-modal').classList.add('show');
-    }
-
-    function openCertModal() {
-        const certPEM = `-----BEGIN CERTIFICATE-----
-MIIBszCCAVmgAwIBAgIUQ2VydGlmaWNhdGVPZlNhYmlIdWIyMDI2MA0GCSqGSIb3
-DQEBCwUAMBIxEDAOBgNVBAMMB1NhYmlIdWIwHhcNMjYxMTE1MDAwMDAwWhcNMjcx
-MTE1MDAwMDAwWjASMRAwDgYDVQQDDAdTYWJpSHViMIGfMA0GCSqGSIb3DQEBAQUA
-A4GNADCBiQKBgQDL8v+SabiHubEnterpriseSigningKey2026VerifiediOS26
------END CERTIFICATE-----
-PASSWORD: sabi2026`;
-        document.getElementById('modal-title').innerText = "Certifikata Enterprise";
-        document.getElementById('modal-desc').innerText = "Shkarko skedarin e çelësit publik për mjetet e firmosjes:";
-        document.getElementById('modal-code').innerText = certPEM;
-        document.getElementById('modal-download-btn').onclick = function() {
-            downloadFile(certPEM, "SabiHub_Enterprise.pem");
-        };
-        document.getElementById('info-modal').classList.add('show');
-    }
-
-    function downloadFile(content, filename) {
-        const blob = new Blob([content], { type: "application/xml;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        logMsg(`U shkarkua skedari: ${filename}`);
-    }
-
-    function closeModal() {
-        document.getElementById('info-modal').classList.remove('show');
-    }
-
-    // 5. DRAWERS & SETTINGS
-    function toggleDrawer(id) {
-        const target = document.getElementById(id);
-        const isOpen = target.classList.contains('open');
-        document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('open'));
-        if (!isOpen) target.classList.add('open');
-    }
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('light-mode', !document.getElementById('dark-toggle').checked);
-        logMsg("Tema e pamjes u ndryshua.");
-    }
-
-    function toggleLED() {
-        document.body.classList.toggle('no-led', !document.getElementById('led-toggle').checked);
-        logMsg("Statusi i dritave LED u përditësua.");
-    }
-
-    function toggleAds() {
-        const active = document.getElementById('ads-toggle').checked;
-        document.getElementById('ads-counter').innerText = active ? `🛡️ Ads Blocked: ${adsBlocked}` : "⚠️ Ads Shield: OFF";
-        logMsg(active ? "Block Ads u aktivizua." : "Block Ads u çaktivizua.");
-    }
-
-    function syncUpdates() {
-        logMsg("Po sinkronizohen lidhjet OTA itms-services://...");
-        setTimeout(() => {
-            adsBlocked += 2;
-            if (document.getElementById('ads-toggle').checked) {
-                document.getElementById('ads-counter').innerText = `🛡️ Ads Blocked: ${adsBlocked}`;
-            }
-            renderApps();
-            logMsg("Të gjitha linqet OTA u përditësuan me sukses!");
-        }, 600);
-    }
-
-    renderApps();
-</script>
-
-</body>
-</html>
+Ruaj & Lidh me Direct Install
+function updateClock() {
+const now = new Date();
+document.getElementById('live-clock').innerText = now.toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+setInterval(updateClock, 1000);
+updateClock();
+const defaultOTA = [
+{
+name: "ESign (Direct OTA)",
+desc: "Enterprise Signed • Server Publik 1",
+short: "ES",
+grad: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+plist: "khoindvn.io.vn"
+},
+{
+name: "Scarlet (Direct OTA)",
+desc: "Enterprise Signed • No-PC Install",
+short: "SC",
+grad: "linear-gradient(135deg, #ef4444, #b91c1c)",
+plist: "usescarlet.com"
+},
+{
+name: "KSign (Direct OTA)",
+desc: "Enterprise Signed • Fast Signer",
+short: "KS",
+grad: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+plist: "khoindvn.io.vn"
+},
+{
+name: "Feather (Direct OTA)",
+desc: "Enterprise Signed • Open Source",
+short: "FT",
+grad: "linear-gradient(135deg, #06b6d4, #0e7490)",
+plist: "khoindvn.io.vn"
+}
+];
+let savedApps = JSON.parse(localStorage.getItem('sabi_ota_links')) || defaultOTA;
+let savedApi = localStorage.getItem('sabi_api_key') || "sk-sabi-live-98a7f6d5e4c3b2a1";
+document.getElementById('api-input').value = savedApi;
+document.getElementById('api-display').innerText = savedApi.substring(0, 18) + "...";
+function saveApiKey() {
+let val = document.getElementById('api-input').value.trim();
+if (!val) {
+val = "sk-sabi-" + Math.random().toString(36).substring(2, 15);
+document.getElementById('api-input').value = val;
+}
+localStorage.setItem('sabi_api_key', val);
+document.getElementById('api-display').innerText = val.substring(0, 18) + "...";
+alert("API Key u ruajt dhe u aktivizua!");
+}
+function render() {
+const box = document.getElementById('apps-list');
+box.innerHTML = '';
+savedApps.forEach((app) => {
+const otaLink = itms-services://?action=download-manifest&url=${encodeURIComponent(app.plist)};
+box.innerHTML += <div class="app-card"> <div class="app-left"> <div class="app-icon" style="background: ${app.grad}">${app.short}</div> <div class="app-info"> <h3>${app.name}</h3> <p>${app.desc}</p> </div> </div> <a href="${otaLink}" class="install-btn">INSTALO</a> </div>;
+});
+box.innerHTML += <div class="app-card"> <div class="app-left"> <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #047857);">DNS</div> <div class="app-info"> <h3>Anti-Revoke DNS</h3> <p>Gjenerues zyrtar i profilit Apple</p> </div> </div> <a href="https://nextdns.io" target="_blank" class="install-btn green">HAP</a> </div>;
+}
+function addNewApp() {
+const name = document.getElementById('new-name').value.trim();
+const desc = document.getElementById('new-desc').value.trim() || "Custom Enterprise OTA";
+const plist = document.getElementById('new-plist').value.trim();
+if (!name || !plist.startsWith('https://')) {
+alert("Vendos një emër dhe një link të vlefshëm HTTPS që mbaron me .plist!");
+return;
+}
+savedApps.unshift({
+name: name,
+desc: desc,
+short: name.substring(0, 2).toUpperCase(),
+grad: "linear-gradient(135deg, #f59e0b, #b45309)",
+plist: plist
+});
+localStorage.setItem('sabi_ota_links', JSON.stringify(savedApps));
+document.getElementById('new-name').value = '';
+document.getElementById('new-desc').value = '';
+document.getElementById('new-plist').value = '';
+toggleDrawer('add-drawer');
+render();
+}
+function toggleDrawer(id) {
+const el = document.getElementById(id);
+const isOpen = el.classList.contains('open');
+document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('open'));
+if (!isOpen) el.classList.add('open');
+}
+render();
