@@ -4,7 +4,6 @@
 <dict>
     <key>PayloadContent</key>
     <array>
-        <!-- 1. Aplikacioni në Ekran (Full Screen) -->
         <dict>
             <key>FullScreen</key>
             <true/>
@@ -29,37 +28,15 @@
             <key>URL</key>
             <string>https://netlify.app</string>
         </dict>
-        <!-- 2. Certifikata e Sigurisë DNS Anti-Revoke -->
-        <dict>
-            <key>DNSSettings</key>
-            <dict>
-                <key>DNSProtocol</key>
-                <string>HTTPS</string>
-                <key>ServerURL</key>
-                <string>https://nextdns.io</string>
-            </dict>
-            <key>PayloadDescription</key>
-            <string>Aktivizon certifikatën e mbrojtjes DNS</string>
-            <key>PayloadDisplayName</key>
-            <string>Sabi Enterprise DNS Shield</string>
-            <key>PayloadIdentifier</key>
-            <string>com.sabihacker.dns.shield</string>
-            <key>PayloadType</key>
-            <string>com.apple.dnsSettings.managed</string>
-            <key>PayloadUUID</key>
-            <string>99998888-7777-6666-5555-444433332222</string>
-            <key>PayloadVersion</key>
-            <integer>1</integer>
-        </dict>
     </array>
     <key>PayloadDescription</key>
-    <string>Paketë e plotë: Aplikacioni Sabi Crypto dhe Certifikata e Mbrojtjes DNS.</string>
+    <string>Profili zyrtar i instalimit për Sabi Crypto App.</string>
     <key>PayloadDisplayName</key>
-    <string>Sabi Master Certificate & App</string>
+    <string>Sabi Crypto App</string>
     <key>PayloadIdentifier</key>
     <string>com.sabihacker.master.profile</string>
     <key>PayloadOrganization</key>
-    <string>Sabi Enterprise Corp</string>
+    <string>Sabi Tech</string>
     <key>PayloadRemovalDisallowed</key>
     <false/>
     <key>PayloadType</key>
